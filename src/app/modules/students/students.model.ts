@@ -270,4 +270,5 @@ studentSchema.methods.isUserExists =async function (id: string){
   const existingUser = await Student.findOne({id});
   return existingUser 
 }
+
 export const Student = model<TStudent,StudentModel>('Student', studentSchema);
