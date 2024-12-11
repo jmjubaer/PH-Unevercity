@@ -8,8 +8,7 @@ import {
   TUserName,
 } from './students.interface';
 import validator from 'validator';
-import bcrypt from 'bcrypt';
-import config from '../../config';
+
 
 const userNameSchema = new Schema<TUserName>({
   firstName: {
@@ -125,16 +124,11 @@ const studentSchema = new Schema<TStudent,StudentModel,StudentMethods>({ // for 
     unique: true,
     trim: true,
   },
-  password: {
-    type: String,
-    required: [true, 'Password is required'],
-    maxLength: [20, 'Password should be at least 8 characters long'],
-    // password must contain at least one uppercase letter, one lowercase letter, one number, and one special character
-    // validate: {
-    //   validator: (value: string) =>
-    //     /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/.test(value),
-    //   message: 'Password must contain at least one uppercase letter, one lowercase letter, one number, and one special character',
-    // },
+  user: {
+    type: Schema.Types.ObjectId,
+    ref: 'User',
+    required: [true, 'User ID is required'],
+    unique: true,
   },
   name: {
     type: userNameSchema,
@@ -203,14 +197,6 @@ const studentSchema = new Schema<TStudent,StudentModel,StudentMethods>({ // for 
     type: String,
     trim: true,
   },
-  isActive: {
-    type: String,
-    enum: {
-      values: ['active', 'blocked'],
-      message: '{VALUE} is an invalid status',
-    },
-    required: [true, 'Status is required'],
-  },
   isDeleted: {
     type: Boolean,
     default: false,
@@ -230,21 +216,6 @@ studentSchema.virtual("fullName").get(function(){
 
 
 
-
-// middleware 
-// pre middleware or pre save middleware
-studentSchema.pre('save', async function (next) {
-  // eslint-disable-next-line @typescript-eslint/no-this-alias
-  const user = this
-  user.password = await bcrypt.hash(user.password,Number(config.bcrypt_salt_round))
-  next()
-})
-
-// post middleware or after save middleware
-studentSchema.post('save', async function (doc,next) {
-  doc.password = '' // remove the password in response
-  next() // optional
-})
 
 // find middleware or before find middleware
 studentSchema.pre('find', async function (next) {

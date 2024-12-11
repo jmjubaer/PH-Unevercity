@@ -1,6 +1,7 @@
 import { model, Schema } from "mongoose";
 import { TUser } from "./users.interface";
-
+import bcrypt from 'bcrypt';
+import config from '../../config'; 
 const userSchema = new Schema<TUser>({
     id: {
         type: String,
@@ -33,4 +34,22 @@ const userSchema = new Schema<TUser>({
     timestamps: true,
 })
 
+
+
+
+// middleware 
+// pre middleware or pre save middleware
+userSchema.pre('save', async function (next) {
+    // eslint-disable-next-line @typescript-eslint/no-this-alias
+    const user = this
+    user.password = await bcrypt.hash(user.password,Number(config.bcrypt_salt_round))
+    next()
+  })
+  
+  // post middleware or after save middleware
+  userSchema.post('save', async function (doc,next) {
+    doc.password = '' // remove the password in response
+    next() // optional
+  })
+  
 export const User = model<TUser>("User",userSchema)

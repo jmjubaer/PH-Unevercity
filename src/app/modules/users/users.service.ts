@@ -1,21 +1,24 @@
-const createStudentIntoDb = async (studentData: TStudent) => {
-    // const result = await Student.create(studentData); // built in static method
-  
-    // built in instance method ==============================
-    const studentInstance = new Student(studentData); // create a instance by StudentModel class.
-  
-    // custom method ==============================
-    if (await studentInstance.isUserExists(studentData.id)) {
-      throw new Error('Student ID already exists');
-    }
-  
-    // built in instance method ==============================
-    const result = await studentInstance.save(); // save the instance into database.  // save() returns promise.
-  
-    return result;
-  };
+import config from '../../config';
+import { TUser } from './users.interface';
+import { User } from './users.model';
+import { TStudent } from '../students/students.interface';
+import { Student } from '../students/students.model';
 
-  export const userServices = {
-    createStudentIntoDb
+const createStudentIntoDb = async (password: string, studentData: TStudent) => {
+  const userData: Partial<TUser> = {};
+
+  userData.password = password || (config.default_password as string);
+  userData.role = 'student';
+  userData.id = '2030100001';
+  const newUser = await User.create(userData);
+  if (Object.keys(newUser).length) {
+    studentData.id = newUser.id;
+    studentData.user = newUser._id;
+    const newStudent = await Student.create(studentData);
+    return newStudent;
   }
-  
+};
+
+export const userServices = {
+  createStudentIntoDb,
+};
