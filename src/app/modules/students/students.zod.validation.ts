@@ -1,27 +1,32 @@
-import { z } from "zod";
+import { z } from 'zod';
 
 // UserName ValidationSchema
 const userNameValidationSchema = z.object({
   firstName: z
     .string()
-    .nonempty("First name is required")
-    .max(50, "First name cannot exceed 50 characters")
+    .nonempty('First name is required')
+    .max(50, 'First name cannot exceed 50 characters')
     .trim()
     .refine(
       (value) => {
-        const firstNameStr = value.charAt(0).toUpperCase() + value.slice(1).toLowerCase();
+        const firstNameStr =
+          value.charAt(0).toUpperCase() + value.slice(1).toLowerCase();
         return firstNameStr === value;
       },
-      { message: "First name should be in capitalized format" }
+      { message: 'First name should be in capitalized format' },
     ),
-  middleName: z.string().max(50, "Middle name cannot exceed 50 characters").trim().optional(),
+  middleName: z
+    .string()
+    .max(50, 'Middle name cannot exceed 50 characters')
+    .trim()
+    .optional(),
   lastName: z
     .string()
-    .nonempty("Last name is required")
-    .max(50, "Last name cannot exceed 50 characters")
+    .nonempty('Last name is required')
+    .max(50, 'Last name cannot exceed 50 characters')
     .trim()
     .refine((value) => /^[A-Za-z]+$/.test(value), {
-      message: "Last name should contain only alphabetic characters",
+      message: 'Last name should contain only alphabetic characters',
     }),
 });
 
@@ -85,44 +90,47 @@ const localGuardianValidationSchema = z.object({
 
 // Student ValidationSchema
 const studentValidationSchema = z.object({
-  id: z.string().nonempty("Student ID is required").trim(),
-  password: z.string().nonempty("Password is required").max(20),
-  name: userNameValidationSchema,
-  gender: z.enum(["male", "female", "other"], { message: "{VALUE} is an invalid gender" }),
-  dateOfBirth: z.string().trim().optional(),
-  email: z
-    .string()
-    .nonempty("Email is required")
-    .max(100, "Email cannot exceed 100 characters")
-    .trim(),
-  contactNo: z
-    .string()
-    .nonempty("Contact number is required")
-    .max(15, "Contact number cannot exceed 15 characters")
-    .trim(),
-  emergencyContactNo: z
-    .string()
-    .nonempty("Emergency contact number is required")
-    .max(15, "Emergency contact number cannot exceed 15 characters")
-    .trim(),
-  bloodGroup: z
-    .enum(["A+", "A-", "B+", "B-", "AB+", "AB-", "O+", "O-"])
-    .optional(),
-  presentAddress: z
-    .string()
-    .nonempty("Present address is required")
-    .max(255, "Present address cannot exceed 255 characters")
-    .trim(),
-  permanentAddress: z
-    .string()
-    .nonempty("Permanent address is required")
-    .max(255, "Permanent address cannot exceed 255 characters")
-    .trim(),
-  guardian: guardianValidationSchema,
-  localGuardian: localGuardianValidationSchema,
-  profileImg: z.string().trim().optional(),
-  isActive: z.enum(["active", "blocked"], { message: "{VALUE} is an invalid status" }),
-  isDeleted: z.boolean().default(false),
+  body: z.object({
+    password: z.string().nonempty('Password is required').max(20),
+    student: z.object({
+      name: userNameValidationSchema,
+      gender: z.enum(['male', 'female', 'other'], {
+        message: '{VALUE} is an invalid gender',
+      }),
+      dateOfBirth: z.date().optional(),
+      email: z
+        .string()
+        .nonempty('Email is required')
+        .max(100, 'Email cannot exceed 100 characters')
+        .trim(),
+      contactNo: z
+        .string()
+        .nonempty('Contact number is required')
+        .max(15, 'Contact number cannot exceed 15 characters')
+        .trim(),
+      emergencyContactNo: z
+        .string()
+        .nonempty('Emergency contact number is required')
+        .max(15, 'Emergency contact number cannot exceed 15 characters')
+        .trim(),
+      bloodGroup: z
+        .enum(['A+', 'A-', 'B+', 'B-', 'AB+', 'AB-', 'O+', 'O-'])
+        .optional(),
+      presentAddress: z
+        .string()
+        .nonempty('Present address is required')
+        .max(255, 'Present address cannot exceed 255 characters')
+        .trim(),
+      permanentAddress: z
+        .string()
+        .nonempty('Permanent address is required')
+        .max(255, 'Permanent address cannot exceed 255 characters')
+        .trim(),
+      guardian: guardianValidationSchema,
+      localGuardian: localGuardianValidationSchema,
+      profileImg: z.string().trim().optional(),
+    }),
+  }),
 });
 
 export { studentValidationSchema };
