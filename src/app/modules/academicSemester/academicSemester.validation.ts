@@ -1,5 +1,5 @@
 import { z } from 'zod';
-import { Months } from './academicDemester.constant';
+import { Months } from './academicSemester.constant';
 
 const academicSemesterValidationSchema = z.object({
   body: z.object({
@@ -9,7 +9,7 @@ const academicSemesterValidationSchema = z.object({
     code: z.enum(['01', '02', '03'], {
       required_error: 'Code is required',
     }),
-    year: z.date({ required_error: 'Year is required' }),
+    year: z.string({ required_error: 'Year is required' }),
     startMonth: z.enum([...Months] as [string], {
       required_error: 'Start Month is required',
     }),
@@ -19,4 +19,4 @@ const academicSemesterValidationSchema = z.object({
   }),
 });
 
-export default { academicSemesterValidationSchema };
+export const academicSemesterValidations = { academicSemesterValidationSchema };
