@@ -97,7 +97,7 @@ const studentValidationSchema = z.object({
       gender: z.enum(['male', 'female', 'other'], {
         message: '{VALUE} is an invalid gender',
       }),
-      dateOfBirth: z.date().optional(),
+      dateOfBirth: z.string().optional(),
       email: z
         .string()
         .nonempty('Email is required')
@@ -126,6 +126,7 @@ const studentValidationSchema = z.object({
         .nonempty('Permanent address is required')
         .max(255, 'Permanent address cannot exceed 255 characters')
         .trim(),
+      admissionSemester: z.string(),
       guardian: guardianValidationSchema,
       localGuardian: localGuardianValidationSchema,
       profileImg: z.string().trim().optional(),

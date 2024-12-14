@@ -1,7 +1,7 @@
 import { ObjectId } from 'mongodb';
 import { academicSemesterNameCodeMapper } from './academicDemester.constant';
 import { AcademicSemester } from './academicSemester.model';
-import { TAcademicSemester } from './academicSemister.interface';
+import { TAcademicSemester } from './academicSemester.interface';
 
 const createAcademicSemesterIntoDb = async (payload: TAcademicSemester) => {
   if (academicSemesterNameCodeMapper[payload.name] !== payload.code) {

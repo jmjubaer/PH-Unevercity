@@ -1,4 +1,4 @@
-import { Model, Types } from "mongoose";
+import { Model, Types } from 'mongoose';
 
 export type TUserName = {
   firstName: string;
@@ -30,6 +30,7 @@ export type TStudent = {
   dateOfBirth?: Date;
   email: string;
   user: Types.ObjectId;
+  admissionSemester: Types.ObjectId;
   contactNo: string;
   emergencyContactNo: string;
   bloodGroup?: 'A+' | 'A-' | 'B+' | 'B-' | 'AB+' | 'AB-' | 'O+' | 'O-';
@@ -41,13 +42,16 @@ export type TStudent = {
   isDeleted: boolean;
 };
 
-
-
 // for custom methods
-export type StudentMethods = { // methods
+export type StudentMethods = {
+  // methods
   // eslint-disable-next-line no-unused-vars
-  isUserExists (id: string): Promise<TStudent | null>;
-}
+  isUserExists(id: string): Promise<TStudent | null>;
+};
 // for custom methods
 
-export type StudentModel = Model<TStudent, Record<string,never>, StudentMethods>; // model
+export type StudentModel = Model<
+  TStudent,
+  Record<string, never>,
+  StudentMethods
+>; // model
