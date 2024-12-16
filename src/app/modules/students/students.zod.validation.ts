@@ -127,6 +127,7 @@ const studentValidationSchema = z.object({
         .max(255, 'Permanent address cannot exceed 255 characters')
         .trim(),
       admissionSemester: z.string(),
+      academicDepartment: z.string(),
       guardian: guardianValidationSchema,
       localGuardian: localGuardianValidationSchema,
       profileImg: z.string().trim().optional(),

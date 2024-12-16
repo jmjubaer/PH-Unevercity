@@ -1,9 +1,15 @@
 import { TStudent } from './students.interface';
 import { Student } from './students.model';
 
-
 const gerAllStudentFromDb = async () => {
-  const result = await Student.find();
+  const result = await Student.find()
+    .populate({
+      path: 'academicDepartment',
+      populate: {
+        path: 'academicFaculty',
+      },
+    })
+    .populate('admissionSemester');
   return result;
 };
 

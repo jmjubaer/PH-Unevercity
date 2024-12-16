@@ -5,6 +5,7 @@ import { TStudent } from '../students/students.interface';
 import { Student } from '../students/students.model';
 import { generateStudentId } from './users.utils';
 import { AcademicSemester } from '../academicSemester/academicSemester.model';
+import AppError from '../../errors/AppError';
 
 const createStudentIntoDb = async (password: string, payload: TStudent) => {
   const userData: Partial<TUser> = {};
@@ -19,7 +20,7 @@ const createStudentIntoDb = async (password: string, payload: TStudent) => {
 
   //set  generated id
   if (!admissionSemester) {
-    throw new Error('Admission semester not found');
+    throw new AppError(400,'Admission semester not found');
   }
   userData.id = await generateStudentId(admissionSemester);
   const newUser = await User.create(userData);

@@ -1,11 +1,12 @@
 import { ObjectId } from 'mongodb';
-import { academicSemesterNameCodeMapper } from './academicDemester.constant';
+import { academicSemesterNameCodeMapper } from './academicsemester.constant';
 import { AcademicSemester } from './academicSemester.model';
 import { TAcademicSemester } from './academicSemester.interface';
+import AppError from '../../errors/AppError';
 
 const createAcademicSemesterIntoDb = async (payload: TAcademicSemester) => {
   if (academicSemesterNameCodeMapper[payload.name] !== payload.code) {
-    throw new Error('Invalid semester code');
+    throw new AppError(400,'Invalid semester code');
   }
   const result = await AcademicSemester.create(payload);
   return result;
@@ -29,7 +30,7 @@ const updateAcademicSemesterIntoDb = async (
     payload.code &&
     academicSemesterNameCodeMapper[payload.name] !== payload.code
   ) {
-    throw new Error('Invalid Semester Code');
+    throw new AppError(404,'Invalid Semester Code');
   }
   // const result = await AcademicSemester.updateOne(
   //   { _id: new ObjectId(id) },
