@@ -60,8 +60,8 @@ const getSingleStudent = catchAsync(async (req, res, next) => {
 
 const updateStudent = catchAsync(async (req, res, next) => {
   const studentId = req.params.studentId;
-  const studentData = req.body;
-  const result = await studentService.updateStudentInDb(studentId, studentData);
+  const {student} = req.body;
+  const result = await studentService.updateStudentInDb(studentId, student);
   res.status(200).json({
     success: true,
     message: 'Student updated successfully',

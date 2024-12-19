@@ -8,6 +8,7 @@ import {
   TUserName,
 } from './students.interface';
 import validator from 'validator';
+import AppError from '../../errors/AppError';
 
 const userNameSchema = new Schema<TUserName>({
   firstName: {
@@ -232,6 +233,15 @@ studentSchema.pre('find', async function (next) {
 // findOne middleware or before findOne middleware
 studentSchema.pre('findOne', async function (next) {
   this.find({ isDeleted: { $ne: true } });
+  next(); // optional
+});
+// findOne middleware or before findOne middleware
+studentSchema.pre('findOneAndUpdate', async function (next) {
+  const query = this.getQuery();
+  const isStudentExist = await Student.findOne(query);
+  if (!isStudentExist) {
+    throw new AppError(404, 'Student dose not exists');
+  }
   next(); // optional
 });
 // aggregate middleware or before aggregate middleware
