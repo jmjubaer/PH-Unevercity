@@ -38,7 +38,7 @@ const updateAdminIntoDB = async (id: string, payload: Partial<TAdmin>) => {
     }
   }
 
-  const result = await Admin.findByIdAndUpdate({ id }, modifiedUpdatedData, {
+  const result = await Admin.findByIdAndUpdate(id, modifiedUpdatedData, {
     new: true,
     runValidators: true,
   });
@@ -56,7 +56,6 @@ const deleteAdminFromDB = async (id: string) => {
       { isDeleted: true },
       { new: true, session },
     );
-
     if (!deletedAdmin) {
       throw new AppError(400, 'Failed to delete student');
     }
