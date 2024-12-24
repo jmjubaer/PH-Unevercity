@@ -1,12 +1,12 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import httpStatus from 'http-status';
+// import httpStatus from 'http-status';
 import mongoose from 'mongoose';
 import QueryBuilder from '../../builder/QueryBuilder';
 import AppError from '../../errors/AppError';
-import { User } from '../user/user.model';
 import { AdminSearchableFields } from './admin.constant';
 import { TAdmin } from './admin.interface';
 import { Admin } from './admin.model';
+import { User } from '../users/users.model';
 
 const getAllAdminsFromDB = async (query: Record<string, unknown>) => {
   const adminQuery = new QueryBuilder(Admin.find(), query)
@@ -16,7 +16,7 @@ const getAllAdminsFromDB = async (query: Record<string, unknown>) => {
     .paginate()
     .fields();
 
-  const result = await adminQuery.modelQuery;
+  const result = await adminQuery.queryModel;
   return result;
 };
 
@@ -58,7 +58,7 @@ const deleteAdminFromDB = async (id: string) => {
     );
 
     if (!deletedAdmin) {
-      throw new AppError(httpStatus.BAD_REQUEST, 'Failed to delete student');
+      throw new AppError(400, 'Failed to delete student');
     }
 
     // get user _id from deletedAdmin
@@ -71,7 +71,7 @@ const deleteAdminFromDB = async (id: string) => {
     );
 
     if (!deletedUser) {
-      throw new AppError(httpStatus.BAD_REQUEST, 'Failed to delete user');
+      throw new AppError(400, 'Failed to delete user');
     }
 
     await session.commitTransaction();

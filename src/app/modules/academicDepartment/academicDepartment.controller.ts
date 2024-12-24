@@ -3,12 +3,11 @@ import catchAsync from '../../utils/catchAsync';
 import { academicDepartmentServices } from './academicDepartment.service';
 
 const createAcademicDepartment = catchAsync(async (req, res) => {
-  const result = await academicDepartmentServices.createAcademicDepartmentIntoDb(
-    req.body,
-  );
+  const result =
+    await academicDepartmentServices.createAcademicDepartmentIntoDb(req.body);
 
   sendResponse(res, {
-    status: 200,
+    statusCode: 200,
     success: false,
     message: 'Academic Department created successfully',
     data: result,
@@ -16,10 +15,11 @@ const createAcademicDepartment = catchAsync(async (req, res) => {
 });
 
 const getAllAcademicDepartment = catchAsync(async (req, res) => {
-  const result = await academicDepartmentServices.getAllAcademicDepartmentsFromDb();
+  const result =
+    await academicDepartmentServices.getAllAcademicDepartmentsFromDb();
 
   sendResponse(res, {
-    status: 200,
+    statusCode: 200,
     success: false,
     message: 'Get academic department successfully',
     data: result,
@@ -28,10 +28,12 @@ const getAllAcademicDepartment = catchAsync(async (req, res) => {
 const getSingleAcademicDepartment = catchAsync(async (req, res) => {
   const departmentId = req.params.departmentId;
   const result =
-    await academicDepartmentServices.getSingleAcademicDepartmentFromDb(departmentId);
+    await academicDepartmentServices.getSingleAcademicDepartmentFromDb(
+      departmentId,
+    );
 
   sendResponse(res, {
-    status: 200,
+    statusCode: 200,
     success: false,
     message: 'Get single academic department successfully',
     data: result,
@@ -40,13 +42,14 @@ const getSingleAcademicDepartment = catchAsync(async (req, res) => {
 
 const updateAcademicDepartment = catchAsync(async (req, res) => {
   const departmentId = req.params.departmentId;
-  const result = await academicDepartmentServices.updateAcademicDepartmentIntoDb(
-    departmentId,
-    req.body,
-  );
+  const result =
+    await academicDepartmentServices.updateAcademicDepartmentIntoDb(
+      departmentId,
+      req.body,
+    );
 
   sendResponse(res, {
-    status: 200,
+    statusCode: 200,
     success: false,
     message: 'Update academic department successfully',
     data: result,

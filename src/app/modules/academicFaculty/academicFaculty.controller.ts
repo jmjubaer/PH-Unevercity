@@ -8,7 +8,7 @@ const createAcademicFaculty = catchAsync(async (req, res) => {
   );
 
   sendResponse(res, {
-    status: 200,
+    statusCode: 200,
     success: false,
     message: 'Academic faculty created successfully',
     data: result,
@@ -19,7 +19,7 @@ const getAllAcademicFaculty = catchAsync(async (req, res) => {
   const result = await academicFacultyServices.getAllAcademicFacultyFromDb();
 
   sendResponse(res, {
-    status: 200,
+    statusCode: 200,
     success: false,
     message: 'Get academic faculty successfully',
     data: result,
@@ -31,7 +31,7 @@ const getSingleAcademicFaculty = catchAsync(async (req, res) => {
     await academicFacultyServices.getSingleAcademicFacultyFromDb(facultyId);
 
   sendResponse(res, {
-    status: 200,
+    statusCode: 200,
     success: false,
     message: 'Get single academic faculty successfully',
     data: result,
@@ -46,7 +46,7 @@ const updateAcademicFaculty = catchAsync(async (req, res) => {
   );
 
   sendResponse(res, {
-    status: 200,
+    statusCode: 200,
     success: false,
     message: 'Update academic faculty successfully',
     data: result,
