@@ -87,7 +87,8 @@ const gerAllStudentFromDb = async (query: Record<string, unknown>) => {
 
 const getSingleStudentFromDb = async (id: string) => {
   // const result = await Student.findOne({ id }); // use findOne method
-  const result = await Student.aggregate([{ $match: { id: id } }]); // use aggregate method
+  // const result = await Student.aggregate([{ $match: { id: id } }]); // use aggregate method
+  const result = await Student.findById(id); // use aggregate method
   return result;
 };
 
@@ -111,28 +112,23 @@ const updateStudentInDb = async (id: string, payload: Partial<TStudent>) => {
       modifiedStudent[`localGuardian.${key}`] = value;
     }
   }
-  const result = await Student.findOneAndUpdate({ id: id }, modifiedStudent);
+  const result = await Student.findByIdAndUpdate(id, modifiedStudent, {
+    new: true,
+  });
   return result;
 };
 
 const deleteStudentFromDb = async (id: string) => {
   const session = await mongoose.startSession();
-  const isUserExists = await User.findOne({ id });
+  const isUserExists = await Student.findById(id);
   if (!isUserExists) {
     throw new AppError(404, 'Student not found');
   }
   try {
     session.startTransaction();
-    const userDeleted = await User.findOneAndUpdate(
-      { id },
-      { isDeleted: true },
-      { new: true, session },
-    );
-    if (!userDeleted) {
-      throw new AppError(400, 'Failed to delete user');
-    }
-    const studentDeleted = await Student.findOneAndUpdate(
-      { id },
+
+    const studentDeleted = await Student.findByIdAndUpdate(
+      id,
       { isDeleted: true },
       { new: true, session },
     );
@@ -140,6 +136,16 @@ const deleteStudentFromDb = async (id: string) => {
     if (!studentDeleted) {
       throw new AppError(400, 'Failed to delete user');
     }
+    const userId = studentDeleted.user;
+    const userDeleted = await User.findByIdAndUpdate(
+      userId,
+      { isDeleted: true },
+      { new: true, session },
+    );
+    if (!userDeleted) {
+      throw new AppError(400, 'Failed to delete user');
+    }
+
     await session.commitTransaction();
     await session.endSession();
     return studentDeleted;

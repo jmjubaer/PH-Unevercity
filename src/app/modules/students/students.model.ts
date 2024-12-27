@@ -252,7 +252,7 @@ studentSchema.pre('aggregate', async function (next) {
 
 // create model
 studentSchema.methods.isUserExists = async function (id: string) {
-  const existingUser = await Student.findOne({ id });
+  const existingUser = await Student.findById(id );
   return existingUser;
 };
 

@@ -1,6 +1,5 @@
 /* eslint-disable no-unused-vars */
 /* eslint-disable @typescript-eslint/no-unused-vars */
-/* eslint-disable @typescript-eslint/no-explicit-any */
 import { NextFunction, Request, RequestHandler, Response } from 'express';
 import { userServices } from './users.service';
 import sendResponse from '../../utils/sendResponse';
