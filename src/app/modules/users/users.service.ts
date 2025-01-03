@@ -6,7 +6,11 @@ import { TUser } from './users.interface';
 import { User } from './users.model';
 import { TStudent } from '../students/students.interface';
 import { Student } from '../students/students.model';
-import { generateAdminId, generateFacultyId, generateStudentId } from './users.utils';
+import {
+  generateAdminId,
+  generateFacultyId,
+  generateStudentId,
+} from './users.utils';
 import { AcademicSemester } from '../academicSemester/academicSemester.model';
 import AppError from '../../errors/AppError';
 import mongoose from 'mongoose';
@@ -115,7 +119,7 @@ const createAdminIntoDB = async (password: string, payload: TFaculty) => {
   // create a user object
   const userData: Partial<TUser> = {};
 
-  //if password is not given , use deafult password
+  //if password is not given , use default password
   userData.password = password || (config.default_password as string);
 
   //set student role

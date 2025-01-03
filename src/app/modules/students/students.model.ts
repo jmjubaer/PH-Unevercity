@@ -159,12 +159,14 @@ const studentSchema = new Schema<TStudent, StudentModel, StudentMethods>(
     email: {
       type: String,
       required: [true, 'Email is required'],
+      unique: true,
       trim: true,
       maxLength: [100, 'Email cannot exceed 100 characters'],
     },
     contactNo: {
       type: String,
       required: [true, 'Contact number is required'],
+      unique: true,
       trim: true,
       maxLength: [15, 'Contact number cannot exceed 15 characters'],
     },
@@ -252,7 +254,7 @@ studentSchema.pre('aggregate', async function (next) {
 
 // create model
 studentSchema.methods.isUserExists = async function (id: string) {
-  const existingUser = await Student.findById(id );
+  const existingUser = await Student.findById(id);
   return existingUser;
 };
 

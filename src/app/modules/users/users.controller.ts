@@ -15,7 +15,7 @@ const createStudent = catchAsync(async (req, res, next) => {
   // });
   sendResponse(res, {
     statusCode: 200,
-    success: false,
+    success: true,
     message: 'Student created successfully',
     data: result,
   });
