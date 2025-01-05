@@ -10,10 +10,12 @@ import { userRoutes } from './app/modules/users/users.routes';
 import { globalErrorHandler } from './app/modules/middleware/globalErrorHandler';
 import { notFound } from './app/modules/middleware/notFound';
 import router from './app/routes';
+import cookieParser from 'cookie-parser';
 const app: Application = express();
 
 app.use(express.json());
-app.use(cors());
+app.use(cookieParser())
+app.use(cors({origin: [ 'http://localhost:5000']}));
 
 app.use('/api/v1', router);
 

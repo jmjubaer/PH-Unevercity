@@ -1,5 +1,3 @@
-/* eslint-disable no-unused-vars */
-/* eslint-disable @typescript-eslint/no-unused-vars */
 import { NextFunction, Request, Response } from 'express';
 import catchAsync from '../../utils/catchAsync';
 import AppError from '../../errors/AppError';
@@ -18,7 +16,6 @@ const auth = (...requiredRole: TUserRole[]) => {
       config.jwt_access_secret as string,
     ) as JwtPayload;
     const { role, userId, iat } = decoded;
-    console.log(role);
     req.user = decoded;
     const user = await User.isUserExistByCustomId(userId);
     if (!user) {
