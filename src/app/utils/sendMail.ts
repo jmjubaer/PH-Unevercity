@@ -6,11 +6,11 @@ export const sendMail = async (to: string, html: string) => {
     port: 587,
     secure: config.NODE_ENV === 'production', // true for port 465, false for other ports
     auth: {
-      user: 'jmjubaer3927@gmail.com',
-      pass: 'trkp iwvb qlho fceh',
+      user: config.nodemailer_user_email,
+      pass: config.nodemailer_user_pass,
     },
   });
- await transporter.sendMail({
+  await transporter.sendMail({
     from: 'jmjubaer3927@gmail.com', // sender address
     to, // list of receivers
     subject: 'Reset password of PH University', // Subject line

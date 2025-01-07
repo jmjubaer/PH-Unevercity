@@ -18,8 +18,15 @@ import { TFaculty } from '../Faculty/faculty.interface';
 import { AcademicDepartment } from '../academicDepartment/academicDepartment.model';
 import { Faculty } from '../Faculty/faculty.model';
 import { Admin } from '../Admin/admin.model';
+import { verifyToken } from '../Auth/auth.utils';
+import { USER_ROLES } from './user.constant';
+import { uploadImageIntoCloudinary } from '../../utils/uploadimage';
 
-const createStudentIntoDb = async (password: string, payload: TStudent) => {
+const createStudentIntoDb = async (
+  file: any,
+  password: string,
+  payload: TStudent,
+) => {
   const userData: Partial<TUser> = {};
 
   userData.password = password || (config.default_password as string);
@@ -51,9 +58,12 @@ const createStudentIntoDb = async (password: string, payload: TStudent) => {
     if (!newStudent.length) {
       throw new AppError(400, 'Failed to create student');
     }
+    const imageName = `${payload?.name?.firstName}-${userData?.id}`;
+    const imageUrl = uploadImageIntoCloudinary(file?.path, imageName);
+
     await session.commitTransaction();
     await session.endSession();
-    return newStudent;
+    return { newStudent, imageUrl };
   } catch (error: any) {
     await session.abortTransaction();
     await session.endSession();
@@ -163,8 +173,26 @@ const createAdminIntoDB = async (password: string, payload: TFaculty) => {
     throw new Error(err);
   }
 };
+const getMe = async (userId: string, role: string) => {
+  let result = null;
+  if (role === USER_ROLES.student) {
+    result = await Student.findOne({ id: userId }).populate('user');
+  } else if (role === USER_ROLES.faculty) {
+    result = await Faculty.findOne({ id: userId }).populate('user');
+  } else if (role === USER_ROLES.admin) {
+    result = await Admin.findOne({ id: userId }).populate('user');
+  }
+  return result;
+};
+const changeStatus = async (status: string, id: string) => {
+  // const isUserExist
+  const result = await User.findByIdAndUpdate(id, { status }, { new: true });
+  return result;
+};
 export const userServices = {
   createStudentIntoDb,
   createFacultyIntoDB,
   createAdminIntoDB,
+  changeStatus,
+  getMe,
 };
