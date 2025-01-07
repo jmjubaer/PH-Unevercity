@@ -52,25 +52,36 @@ const createStudentIntoDb = async (
     if (!newUser.length) {
       throw new AppError(400, 'Failed to create user');
     }
+    const imageName = `${payload?.name?.firstName}-${userData?.id}`;
+
+    const { secure_url } = await uploadImageIntoCloudinary(
+      file?.path,
+      imageName,
+    );
+
     payload.id = newUser[0].id;
     payload.user = newUser[0]._id;
+    payload.profileImg = secure_url;
     const newStudent = await Student.create([payload], { session });
     if (!newStudent.length) {
       throw new AppError(400, 'Failed to create student');
     }
-    const imageName = `${payload?.name?.firstName}-${userData?.id}`;
-    const imageUrl = uploadImageIntoCloudinary(file?.path, imageName);
 
     await session.commitTransaction();
     await session.endSession();
-    return { newStudent, imageUrl };
+    return newStudent;
   } catch (error: any) {
     await session.abortTransaction();
     await session.endSession();
     throw new AppError(500, error);
   }
 };
-const createFacultyIntoDB = async (password: string, payload: TFaculty) => {
+
+const createFacultyIntoDB = async (
+  file: any,
+  password: string,
+  payload: TFaculty,
+) => {
   // create a user object
   const userData: Partial<TUser> = {};
 
@@ -104,6 +115,14 @@ const createFacultyIntoDB = async (password: string, payload: TFaculty) => {
     if (!newUser.length) {
       throw new AppError(400, 'Failed to create user');
     }
+    const imageName = `${payload?.name?.firstName}-${userData?.id}`;
+
+    const { secure_url } = await uploadImageIntoCloudinary(
+      file?.path,
+      imageName,
+    );
+    payload.profileImg = secure_url;
+
     // set id , _id as user
     payload.id = newUser[0].id;
     payload.user = newUser[0]._id; //reference _id
@@ -127,7 +146,11 @@ const createFacultyIntoDB = async (password: string, payload: TFaculty) => {
   }
 };
 
-const createAdminIntoDB = async (password: string, payload: TFaculty) => {
+const createAdminIntoDB = async (
+  file: any,
+  password: string,
+  payload: TFaculty,
+) => {
   // create a user object
   const userData: Partial<TUser> = {};
 
@@ -152,6 +175,13 @@ const createAdminIntoDB = async (password: string, payload: TFaculty) => {
     if (!newUser.length) {
       throw new AppError(400, 'Failed to create admin');
     }
+    const imageName = `${payload?.name?.firstName}-${userData?.id}`;
+
+    const { secure_url } = await uploadImageIntoCloudinary(
+      file?.path,
+      imageName,
+    );
+    payload.profileImg = secure_url;
     // set id , _id as user
     payload.id = newUser[0].id;
     payload.user = newUser[0]._id; //reference _id

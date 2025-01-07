@@ -206,6 +206,7 @@ const studentSchema = new Schema<TStudent, StudentModel, StudentMethods>(
     },
     profileImg: {
       type: String,
+      required: true,
       trim: true,
     },
     isDeleted: {

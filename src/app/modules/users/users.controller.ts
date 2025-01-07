@@ -3,9 +3,13 @@ import sendResponse from '../../utils/sendResponse';
 import catchAsync from '../../utils/catchAsync';
 
 const createStudent = catchAsync(async (req, res) => {
-  const file = req.file
+  const file = req.file;
   const { password, student } = req.body;
-  const result = await userServices.createStudentIntoDb(file,password, student);
+  const result = await userServices.createStudentIntoDb(
+    file,
+    password,
+    student,
+  );
   // res.status(200).json({
   //   success: true,
   //   message: 'Student created successfully',
@@ -19,9 +23,15 @@ const createStudent = catchAsync(async (req, res) => {
   });
 });
 const createFaculty = catchAsync(async (req, res) => {
+  const file = req.file;
+
   const { password, faculty: facultyData } = req.body;
 
-  const result = await userServices.createFacultyIntoDB(password, facultyData);
+  const result = await userServices.createFacultyIntoDB(
+    file,
+    password,
+    facultyData,
+  );
 
   sendResponse(res, {
     statusCode: 200,
@@ -32,9 +42,15 @@ const createFaculty = catchAsync(async (req, res) => {
 });
 
 const createAdmin = catchAsync(async (req, res) => {
+  const file = req.file;
+
   const { password, admin: adminData } = req.body;
 
-  const result = await userServices.createAdminIntoDB(password, adminData);
+  const result = await userServices.createAdminIntoDB(
+    file,
+    password,
+    adminData,
+  );
 
   sendResponse(res, {
     statusCode: 200,
