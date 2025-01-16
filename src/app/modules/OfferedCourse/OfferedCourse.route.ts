@@ -8,8 +8,19 @@ const router = express.Router();
 
 router.get(
   '/',
+  auth('supperAdmin', 'admin', 'faculty'),
+  OfferedCourseControllers.getAllOfferedCourses,
+);
+
+router.get(
+  '/',
   auth('supperAdmin', 'admin', 'faculty', 'student'),
   OfferedCourseControllers.getAllOfferedCourses,
+);
+router.get(
+  '/my-offered-courses',
+  auth('student'),
+  OfferedCourseControllers.getMyOfferedCourses,
 );
 
 router.get(

@@ -26,7 +26,8 @@ const getAllEnrolledCourser = catchAsync(async (req, res) => {
     statusCode: 200,
     success: true,
     message: 'Get all enrolled course successfully',
-    data: result,
+    meta:  result.meta,
+    data: result.result,
   });
 });
 const updateEnrolledCourseMarks = catchAsync(async (req, res) => {

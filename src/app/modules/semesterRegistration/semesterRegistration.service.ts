@@ -44,7 +44,8 @@ const getAllSemesterRegistration = async (query: Record<string, unknown>) => {
     .paginate()
     .fields();
   const result = await semesterQuery.queryModel;
-  return result;
+  const meta = await semesterQuery.countTotal()
+  return {result, meta};
 };
 const getSingleSemesterRegistration = async (id: string) => {
   const result = await SemesterRegistration.findById(id);

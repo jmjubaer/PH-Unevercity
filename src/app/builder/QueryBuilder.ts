@@ -56,7 +56,7 @@ class QueryBuilder<T> {
     const page = Number(this?.query?.page) || 1;
     const totalPage = Math.ceil(total / limit);
 
-    return { total, totalPage, limit, page };
+    return { limit, page, total, totalPage };
   }
 }
 
