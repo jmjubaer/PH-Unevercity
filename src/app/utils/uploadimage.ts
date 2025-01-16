@@ -9,6 +9,7 @@ cloudinary.config({
   api_key: config.cloudinary_api_key,
   api_secret: config.cloudinary_api_secret, // Click 'View API Keys' above to copy your API secret
 });
+
 export const uploadImageIntoCloudinary = async (
   path: string,
   imageName: string,
@@ -29,6 +30,7 @@ export const uploadImageIntoCloudinary = async (
   });
   return uploadResult;
 };
+
 const storage = multer.diskStorage({
   destination: function (req, file, cb) {
     cb(null, process.cwd() + '/uploads');

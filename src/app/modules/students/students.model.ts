@@ -140,6 +140,10 @@ const studentSchema = new Schema<TStudent, StudentModel, StudentMethods>(
       type: Schema.Types.ObjectId,
       ref: 'AcademicDepartment',
     },
+    academicFaculty: {
+      type: Schema.Types.ObjectId,
+      ref: 'AcademicFaculty',
+    },
     name: {
       type: userNameSchema,
       required: [true, 'Student name is required'],
@@ -206,8 +210,8 @@ const studentSchema = new Schema<TStudent, StudentModel, StudentMethods>(
     },
     profileImg: {
       type: String,
-      required: true,
       trim: true,
+      default: '',
     },
     isDeleted: {
       type: Boolean,

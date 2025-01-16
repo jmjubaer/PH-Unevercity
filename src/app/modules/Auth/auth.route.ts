@@ -13,22 +13,40 @@ router.post(
 );
 router.post(
   '/change-password',
-  auth(USER_ROLES.admin, USER_ROLES?.faculty, USER_ROLES?.student),
+  auth(
+    USER_ROLES.admin,
+    USER_ROLES?.faculty,
+    USER_ROLES?.student,
+    USER_ROLES.supperAdmin,
+  ),
   requestValidation(AuthValidations.changePasswordValidationSchema),
   authController.changePassword,
 );
 router.post(
   '/refresh-token',
+  auth(
+    USER_ROLES.admin,
+    USER_ROLES?.faculty,
+    USER_ROLES?.student,
+    USER_ROLES.supperAdmin,
+  ),
   requestValidation(AuthValidations.refreshTokenValidationSchema),
   authController.refreshToken,
 );
 router.post(
   '/forgot-password',
+  auth(
+    USER_ROLES.admin,
+    USER_ROLES?.faculty,
+    USER_ROLES?.student,
+    USER_ROLES.supperAdmin,
+  ),
   requestValidation(AuthValidations.forgotPasswordValidationSchema),
   authController.forgotPassword,
 );
 router.post(
   '/reset-password',
+  
   requestValidation(AuthValidations.resetPasswordValidationSchema),
   authController.resetPassword,
 );
