@@ -9,7 +9,7 @@ const createAcademicSemester = catchAsync(async (req, res) => {
 
   sendResponse(res, {
     statusCode: 200,
-    success: false,
+    success: true,
     message: 'Academic semester created successfully',
     data: result,
   });
@@ -22,7 +22,7 @@ const getAllAcademicSemester = catchAsync(async (req, res) => {
 
   sendResponse(res, {
     statusCode: 200,
-    success: false,
+    success: true,
     message: 'Get academic semester successfully',
     meta: result.meta,
     data: result.result,
@@ -35,7 +35,7 @@ const getSingleAcademicSemester = catchAsync(async (req, res) => {
 
   sendResponse(res, {
     statusCode: 200,
-    success: false,
+    success: true,
     message: 'Get academic semester successfully',
     data: result,
   });
@@ -50,7 +50,7 @@ const updateAcademicSemester = catchAsync(async (req, res) => {
 
   sendResponse(res, {
     statusCode: 200,
-    success: false,
+    success: true,
     message: 'Get academic semester successfully',
     data: result,
   });

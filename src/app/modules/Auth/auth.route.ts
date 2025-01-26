@@ -24,12 +24,6 @@ router.post(
 );
 router.post(
   '/refresh-token',
-  auth(
-    USER_ROLES.admin,
-    USER_ROLES?.faculty,
-    USER_ROLES?.student,
-    USER_ROLES.supperAdmin,
-  ),
   requestValidation(AuthValidations.refreshTokenValidationSchema),
   authController.refreshToken,
 );
@@ -46,7 +40,7 @@ router.post(
 );
 router.post(
   '/reset-password',
-  
+
   requestValidation(AuthValidations.resetPasswordValidationSchema),
   authController.resetPassword,
 );
