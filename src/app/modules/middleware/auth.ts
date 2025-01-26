@@ -7,21 +7,14 @@ import jwt, { JwtPayload } from 'jsonwebtoken';
 import config from '../../config';
 import { TUserRole } from '../users/users.interface';
 import { User } from '../users/users.model';
+import { verifyToken } from '../Auth/auth.utils';
 const auth = (...requiredRole: TUserRole[]) => {
   return catchAsync(async (req: Request, res: Response, next: NextFunction) => {
     const token = req.headers.authorization;
     if (!token) {
       throw new AppError(401, 'You are not authorized !');
     }
-    let decoded;
-    try {
-      decoded = jwt.verify(
-        token,
-        config.jwt_access_secret as string,
-      ) as JwtPayload;
-    } catch (error) {
-      throw new AppError(401, 'Token is expired');
-    }
+    const decoded = verifyToken(token, config.jwt_access_secret as string);
 
     const { role, userId, iat } = decoded;
     req.user = decoded;
