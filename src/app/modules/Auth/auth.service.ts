@@ -7,6 +7,7 @@ import jwt, { JwtPayload } from 'jsonwebtoken';
 import { createToken } from './auth.utils';
 import { sendMail } from '../../utils/sendMail';
 const loginUser = async (payload: TLoginUser) => {
+  
   const user = await User.isUserExistByCustomId(payload?.id);
   if (!user) {
     throw new AppError(404, 'User does not exist');
@@ -35,7 +36,7 @@ const loginUser = async (payload: TLoginUser) => {
   const accessToken = createToken(
     jwtPayload,
     config.jwt_access_secret as string,
-    '30d',
+    '5s',
   );
   const refreshToken = createToken(
     jwtPayload,

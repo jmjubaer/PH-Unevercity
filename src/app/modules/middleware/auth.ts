@@ -1,3 +1,5 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
+/* eslint-disable no-unused-vars */
 import { NextFunction, Request, Response } from 'express';
 import catchAsync from '../../utils/catchAsync';
 import AppError from '../../errors/AppError';
@@ -11,10 +13,16 @@ const auth = (...requiredRole: TUserRole[]) => {
     if (!token) {
       throw new AppError(401, 'You are not authorized !');
     }
-    const decoded = jwt.verify(
-      token,
-      config.jwt_access_secret as string,
-    ) as JwtPayload;
+    let decoded;
+    try {
+      decoded = jwt.verify(
+        token,
+        config.jwt_access_secret as string,
+      ) as JwtPayload;
+    } catch (error) {
+      throw new AppError(401, 'Token is expired');
+    }
+
     const { role, userId, iat } = decoded;
     req.user = decoded;
     const user = await User.isUserExistByCustomId(userId);

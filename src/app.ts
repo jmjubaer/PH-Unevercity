@@ -1,7 +1,7 @@
 /* eslint-disable no-undef */
 /* eslint-disable no-unused-vars */
 /* eslint-disable @typescript-eslint/no-unused-vars */
-/* eslint-disable @typescript-eslint/no-explicit-any */ 
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import { Application, NextFunction, Request, Response } from 'express';
 import express from 'express';
 import cors from 'cors';
@@ -14,8 +14,8 @@ import cookieParser from 'cookie-parser';
 const app: Application = express();
 
 app.use(express.json());
-app.use(cookieParser())
-app.use(cors({origin: [ 'http://localhost:5000']}));
+app.use(cookieParser());
+app.use(cors({ origin: ['http://localhost:5173'], credentials: true }));
 
 app.use('/api/v1', router);
 
@@ -24,6 +24,6 @@ app.get('/', (req: Request, res: Response) => {
 });
 
 app.use(globalErrorHandler);
-app.use(notFound)
+app.use(notFound);
 
 export default app;

@@ -17,7 +17,8 @@ const getAllAdminsFromDB = async (query: Record<string, unknown>) => {
     .fields();
 
   const result = await adminQuery.queryModel;
-  return result;
+  const meta = await adminQuery.countTotal()
+  return {result, meta};
 };
 
 const getSingleAdminFromDB = async (id: string) => {

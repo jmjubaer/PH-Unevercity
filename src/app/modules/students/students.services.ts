@@ -1,4 +1,3 @@
-/* eslint-disable no-unused-vars */
 import mongoose from 'mongoose';
 import { TStudent } from './students.interface';
 import { Student } from './students.model';
@@ -66,14 +65,8 @@ const gerAllStudentFromDb = async (query: Record<string, unknown>) => {
   */
   const StudentQuery = new QueryBuilder(
     Student.find()
-    .populate('user')
-      .populate({
-        path: 'academicDepartment',
-        populate: {
-          path: 'academicFaculty',
-        },
-      })
-      .populate('admissionSemester'),
+      .populate('user')
+      .populate('academicDepartment academicFaculty admissionSemester'),
     query,
   )
     .search(searchAbleField)
@@ -83,7 +76,8 @@ const gerAllStudentFromDb = async (query: Record<string, unknown>) => {
     .fields();
 
   const result = await StudentQuery.queryModel;
-  return result;
+  const meta = await StudentQuery.countTotal();
+  return { result, meta };
 };
 
 const getSingleStudentFromDb = async (id: string) => {

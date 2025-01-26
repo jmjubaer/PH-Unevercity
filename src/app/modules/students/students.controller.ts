@@ -1,6 +1,5 @@
 /* eslint-disable no-unused-vars */
 /* eslint-disable @typescript-eslint/no-unused-vars */
-/* eslint-disable @typescript-eslint/no-explicit-any */
 import { NextFunction, Request, RequestHandler, Response } from 'express';
 import { studentService } from './students.services';
 import catchAsync from '../../utils/catchAsync';
@@ -38,13 +37,13 @@ import catchAsync from '../../utils/catchAsync';
 //   }
 // };
 
-
 const getAllStudent = catchAsync(async (req, res, next) => {
   const result = await studentService.gerAllStudentFromDb(req.query);
   res.status(200).json({
     success: true,
     message: 'All students retrieved successfully',
-    data: result,
+    meta: result.meta,
+    data: result.result,
   });
 });
 
@@ -60,7 +59,7 @@ const getSingleStudent = catchAsync(async (req, res, next) => {
 
 const updateStudent = catchAsync(async (req, res, next) => {
   const studentId = req.params.studentId;
-  const {student} = req.body;
+  const { student } = req.body;
   const result = await studentService.updateStudentInDb(studentId, student);
   res.status(200).json({
     success: true,

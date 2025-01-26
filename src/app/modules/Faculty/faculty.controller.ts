@@ -20,8 +20,9 @@ const getAllFaculties = catchAsync(async (req, res) => {
   sendResponse(res, {
     statusCode: 200,
     success: true,
-    message: 'Faculties are retrieved succesfully',
-    data: result,
+    message: 'Faculties are retrieved successfully',
+    meta: result.meta,
+    data: result.result,
   });
 });
 
