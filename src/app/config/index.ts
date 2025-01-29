@@ -12,6 +12,9 @@ export default {
   jwt_access_secret: process.env.JWT_ACCESS_SECRET,
   jwt_refresh_secret: process.env.JWT_REFRESH_SECRET,
 
+  jwt_access_token_duration: process.env.JWT_ACCESS_TOKEN_DURATION,
+  jwt_refresh_token_duration: process.env.JWT_REFRESH_TOKEN_DURATION,
+
   supper_admin_password: process.env.SUMMER_ADMIN_PASSWORD,
 
   nodemailer_host: process.env.NODEMAILER_HOST,

@@ -35,12 +35,12 @@ const loginUser = async (payload: TLoginUser) => {
   const accessToken = createToken(
     jwtPayload,
     config.jwt_access_secret as string,
-    '3s',
+    config.jwt_access_token_duration as string,
   );
   const refreshToken = createToken(
     jwtPayload,
     config.jwt_refresh_secret as string,
-    '365d',
+    config.jwt_refresh_token_duration as string,
   );
 
   return {
@@ -121,9 +121,9 @@ const getRefreshToken = async (token: string) => {
   const accessToken = createToken(
     jwtPayload,
     config.jwt_access_secret as string,
-    '1d',
+    config.jwt_access_token_duration as string,
   );
-  return accessToken;
+  return { accessToken };
 };
 const forgotPassword = async (userId: string) => {
   const user = await User.isUserExistByCustomId(userId);

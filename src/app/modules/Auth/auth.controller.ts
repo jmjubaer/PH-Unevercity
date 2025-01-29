@@ -6,11 +6,11 @@ import { authServices } from './auth.service';
 const loginUser = catchAsync(async (req, res) => {
   const result = await authServices.loginUser(req.body);
   const { accessToken, refreshToken, needsPasswordChange } = result;
-  res.cookie('PHURefreshToken', refreshToken, {
-    secure: config.NODE_ENV === 'production',
+  res.cookie('refreshToken', refreshToken, {
+    secure: config.NODE_ENV === 'PRODUCTION',
     httpOnly: true,
     sameSite: 'none',
-    maxAge: 1000 * 60 * 60 * 24 * 365
+    maxAge: 1000 * 60 * 60 * 24 * 365,
   });
   sendResponse(res, {
     statusCode: 200,
@@ -34,8 +34,8 @@ const changePassword = catchAsync(async (req, res) => {
   });
 });
 const refreshToken = catchAsync(async (req, res) => {
-  const { PHURefreshToken } = req.cookies;
-  const result = await authServices.getRefreshToken(PHURefreshToken);
+  const { refreshToken } = req.cookies;
+  const result = await authServices.getRefreshToken(refreshToken);
 
   sendResponse(res, {
     statusCode: 200,
