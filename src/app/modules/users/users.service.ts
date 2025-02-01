@@ -235,6 +235,10 @@ const getMe = async (userId: string, role: string) => {
 };
 const changeStatus = async (status: string, id: string) => {
   // const isUserExist
+  const isUserExist = await User.findById(id);
+  if (!isUserExist) {
+    throw new AppError(404, 'User not found');
+  }
   const result = await User.findByIdAndUpdate(id, { status }, { new: true });
   return result;
 };
