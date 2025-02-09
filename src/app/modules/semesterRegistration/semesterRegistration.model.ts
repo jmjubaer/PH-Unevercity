@@ -8,6 +8,7 @@ const semesterRegistrationSchema = new Schema<TSemesterRegistration>(
       type: Schema.Types.ObjectId,
       required: true,
       unique: true,
+      ref: 'AcademicSemester',
     },
     status: {
       type: String,

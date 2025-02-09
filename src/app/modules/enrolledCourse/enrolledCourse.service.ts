@@ -140,6 +140,7 @@ const createEnrolledCourseIntoDB = async (
     throw new Error(err);
   }
 };
+
 const updateEnrolledCourseMarksIntoDB = async (
   facultyId: string,
   payload: Partial<TEnrolledCourse>,
@@ -218,7 +219,33 @@ const updateEnrolledCourseMarksIntoDB = async (
 
   return result;
 };
+const myEnrolledCourseFromDB = async (
+  userId: string,
+  query: Record<string, unknown>,
+) => {
+  const student = await Student.findOne({ id: userId }, { _id: 1 });
 
+  if (!student) {
+    throw new AppError(404, 'Student not found !');
+  }
+  const enrolCourseQuery = new QueryBuilder(
+    EnrolledCourse.find({ student: student._id }).populate(
+      'semesterRegistration academicSemester academicDepartment course offeredCourse',
+    ),
+    query,
+  )
+    .fields()
+    .filter()
+    .paginate()
+    .sort();
+  const result = await enrolCourseQuery.queryModel;
+  const meta = await enrolCourseQuery.countTotal();
+
+  return {
+    result,
+    meta,
+  };
+};
 const getAllEnrolledCourserFromDB = async (query: Record<string, unknown>) => {
   const enrolCourseQuery = new QueryBuilder(EnrolledCourse.find(), query)
     .fields()
@@ -233,8 +260,37 @@ const getAllEnrolledCourserFromDB = async (query: Record<string, unknown>) => {
     meta,
   };
 };
+const getFacultyCourseFromDB = async (
+  userId: string,
+  query: Record<string, unknown>,
+) => {
+  const faculty = await Faculty.findOne({ id: userId }, { _id: 1 });
+
+  if (!faculty) {
+    throw new AppError(404, 'Faculty not found !');
+  }
+  const enrolCourseQuery = new QueryBuilder(
+    EnrolledCourse.find({ faculty: faculty._id }).populate(
+      'semesterRegistration academicSemester academicDepartment academicFaculty course offeredCourse student faculty',
+    ),
+    query,
+  )
+    .fields()
+    .filter()
+    .paginate()
+    .sort();
+  const result = await enrolCourseQuery.queryModel;
+  const meta = await enrolCourseQuery.countTotal();
+
+  return {
+    result,
+    meta,
+  };
+};
 export const EnrolledCourseServices = {
   createEnrolledCourseIntoDB,
   updateEnrolledCourseMarksIntoDB,
-  getAllEnrolledCourserFromDB
+  myEnrolledCourseFromDB,
+  getAllEnrolledCourserFromDB,
+  getFacultyCourseFromDB
 };

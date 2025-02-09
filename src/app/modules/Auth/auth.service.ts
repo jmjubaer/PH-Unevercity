@@ -24,7 +24,7 @@ const loginUser = async (payload: TLoginUser) => {
     user?.password,
   );
   if (!isPasswordMatched) {
-    throw new AppError(401, 'Incorrect password');
+    throw new AppError(403, 'Incorrect password');
   }
 
   const jwtPayload = {
@@ -70,10 +70,10 @@ const changePassword = async (
     user?.password,
   );
   if (!isPasswordMatched) {
-    throw new AppError(401, 'Incorrect password');
+    throw new AppError(403, 'Incorrect password');
   }
   if (payload?.oldPassword === payload.newPassword) {
-    throw new AppError(401, 'Password is same as old password');
+    throw new AppError(403, 'Password is same as old password');
   }
   const hashedPassword = await bcrypt.hash(
     payload?.newPassword,

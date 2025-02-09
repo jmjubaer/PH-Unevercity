@@ -129,7 +129,12 @@ const createOfferedCourseIntoDB = async (payload: TOfferedCourse) => {
 };
 
 const getAllOfferedCoursesFromDB = async (query: Record<string, unknown>) => {
-  const offeredCourseQuery = new QueryBuilder(OfferedCourse.find(), query)
+  const offeredCourseQuery = new QueryBuilder(
+    OfferedCourse.find().populate(
+      'semesterRegistration academicSemester academicFaculty academicDepartment course faculty',
+    ),
+    query,
+  )
     .filter()
     .sort()
     .paginate()
@@ -158,6 +163,7 @@ const getMyOfferedCoursesFromDB = async (
   if (!currentOngoingRegisterSemester) {
     throw new AppError(404, 'There has no ongoing register semester');
   }
+
   const aggregationQuery = [
     {
       $match: {

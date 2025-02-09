@@ -3,7 +3,7 @@ import {
   TEnrolledCourse,
   TEnrolledCourseMarks,
 } from './enrolledCourse.interface';
-import { Grade } from './enrolledcourse.constant';
+import { Grade } from './enrolledCourse.constant';
 
 const courseMarksSchema = new Schema<TEnrolledCourseMarks>(
   {

@@ -2,7 +2,7 @@ import { z } from 'zod';
 
 const createEnrolledCourseValidationZodSchema = z.object({
   body: z.object({
-    offeredCourse: z.string(),
+    offeredCourse: z.string({ required_error: 'Offered Course is required' }),
   }),
 });
 

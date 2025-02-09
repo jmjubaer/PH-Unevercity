@@ -9,7 +9,7 @@ import { Admin } from './admin.model';
 import { User } from '../users/users.model';
 
 const getAllAdminsFromDB = async (query: Record<string, unknown>) => {
-  const adminQuery = new QueryBuilder(Admin.find(), query)
+  const adminQuery = new QueryBuilder(Admin.find().populate('user'), query)
     .search(AdminSearchableFields)
     .filter()
     .sort()
@@ -17,8 +17,8 @@ const getAllAdminsFromDB = async (query: Record<string, unknown>) => {
     .fields();
 
   const result = await adminQuery.queryModel;
-  const meta = await adminQuery.countTotal()
-  return {result, meta};
+  const meta = await adminQuery.countTotal();
+  return { result, meta };
 };
 
 const getSingleAdminFromDB = async (id: string) => {

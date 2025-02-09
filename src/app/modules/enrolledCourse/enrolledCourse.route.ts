@@ -28,5 +28,15 @@ router.get(
   auth('faculty', 'admin'),
   EnrolledCourseControllers.getAllEnrolledCourser,
 );
+router.get(
+  '/my-enrolled-course',
+  auth('student'),
+  EnrolledCourseControllers.getMyEnrolledCourse,
+);
+router.get(
+  '/my-course',
+  auth('faculty'),
+  EnrolledCourseControllers.getAllFacultyCourse,
+);
 
 export const EnrolledCourseRoutes = router;
